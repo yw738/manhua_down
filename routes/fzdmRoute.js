@@ -3,14 +3,13 @@
  */
 const express = require('express');
 const api = require('../controller/fzdmController');
-const FzdmRoute =express.Router();
+const fzdmRoute = express.Router();
 
 
-FzdmRoute.route('/fzdm/home').get(api.home);
-
-FzdmRoute.route('/fzdm/list').get(api.list);
-
-FzdmRoute.route('/fzdm/details').get(api.details);
+fzdmRoute.route('/fzdm/home').get(api.home);
+fzdmRoute.route('/fzdm/list').get(api.list);
 
 
-module.exports = FzdmRoute;
+
+
+module.exports = fzdmRoute;
