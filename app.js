@@ -9,6 +9,6 @@ app.use(RNRoute);
 app.use(fzdmRoute);
 app.use(TxtApi);
 app.use(mhApi);
-let server = app.listen(8881, function() {
+let server = app.listen(80, function() {
     console.log('启动');
 });
