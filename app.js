@@ -2,13 +2,14 @@ const express = require('express');
 const app = express();
 
 const RNRoute = require('./routes/RNRoute');
-const fzdmRoute = require('./routes/fzdmRoute');
-const TxtApi = require('./routes/jianRoute');
+const fzdmRoute = require('./routes/fzdmRoute');//风之漫画
 const mhApi = require('./routes/72mhRoute');
+const api = require("./routes/ApiRoute");
 app.use(RNRoute);
 app.use(fzdmRoute);
-app.use(TxtApi);
 app.use(mhApi);
-let server = app.listen(8881, function() {
+app.use(api);
+app.use(express.static(__dirname+'/public'));
+app.listen(8881, function() {
     console.log('启动');
 });
