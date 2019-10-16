@@ -2,13 +2,8 @@ const cheerio = require('cheerio');
 const Bagpipe = require('bagpipe');
 const bagpipe = new Bagpipe(10, { timeout: 100 });
 const Nightmare = require('nightmare');
-const nightmare = Nightmare({ show: false });
+const nightmare = Nightmare({ show: true });
 const url = 'https://www.manhuaniu.com';
-// http://m.72qier.com/maoxian
-// https://manhua.fzdm.com
-//https://www.manhuaniu.com/
-
-
 const apiModel = require("../../model/ApiModel");
 let { addDetailDb } = apiModel;
 
@@ -30,12 +25,12 @@ let getHome = (res) => {
             tit: tit,
             new_zj: new_zj
         });
-        apiModel.add({
-            href: href,
-            titImg: titImg,
-            tit: tit,
-            new_zj: new_zj
-        }, (err, data) => '');
+        // apiModel.add({
+        //     href: href,
+        //     titImg: titImg,
+        //     tit: tit,
+        //     new_zj: new_zj
+        // }, (err, data) => '');
     });
     return arr;
 };
@@ -51,10 +46,24 @@ let getList = (json) => {
             .then(htmlStr => {
                 let $ = cheerio.load(htmlStr);
                 let parentTit = $('.book-title h1 span').text();
-                let tips = $('#intro-cut p').text();
+                let tips = $('#intro-cut p').text().trim();
                 let isEnd = $(".status a").eq(0).text();
-                
-                return false
+                let gx_time = $(".status .red").text();
+                let author = $(".detail-list li").eq(1).find("span").eq(1).find("a").text();
+                let img = $(".cover .pic").attr("src");
+                let c_type = $(".detail-list li").eq(1).find("span").eq(0).find("a").eq(0).text();
+                let listType = $(".detail-list li").eq(0).find("span").eq(1).find("a").text();
+                apiModel.updated({
+                    mh_id: parentId,
+                    title: parentTit,
+                    tips: tips,
+                    isEnd: isEnd,
+                    gx_time: gx_time,
+                    author: author,
+                    img: img,
+                    c_type: c_type,
+                    listType: listType,
+                })
                 $('#chapter-list-1 li').each((index, item) => {
                     let list_id = $(item).find('a').attr('href').split("/").reverse()[0].split(".")[0];
                     let title = $(item).find('a span').text();
@@ -65,7 +74,6 @@ let getList = (json) => {
                         title: title
                     });
                     console.log('图书列表入库:', parentTit, '--', title);
-
                     arr.push({
                         parentId: parentId,
                         list_id: list_id,
@@ -156,7 +164,9 @@ const Api = {
                 console.log(`报错了 - ${error}`);
             });
     },
+   
     list(req, res) {
+         //通过漫画id 来爬取漫画
         let { query: { id } } = req;
         getList({
             parentId: id
