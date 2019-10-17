@@ -10,6 +10,6 @@ app.use(fzdmRoute);
 app.use(mhApi);
 app.use(api);
 app.use(express.static(__dirname+'/public'));
-app.listen(8881, function() {
+app.listen(80, function() {
     console.log('启动');
 });

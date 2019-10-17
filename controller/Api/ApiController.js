@@ -164,7 +164,6 @@ const Api = {
                 console.log(`报错了 - ${error}`);
             });
     },
-   
     list(req, res) {
          //通过漫画id 来爬取漫画
         let { query: { id } } = req;
