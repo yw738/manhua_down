@@ -1,2 +1,2 @@
 # nodeReptile
-node 漫画爬虫备份 
+node 漫画爬虫脚本
