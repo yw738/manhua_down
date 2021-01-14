@@ -1,1 +1,174 @@
-<!DOCTYPE html><html lang=en><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=referrer content=no-referrer><meta name=viewport content="width=device-width,initial-scale=1"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,viewport-fit=cover"><link rel=icon href=/favicon.ico><link rel=stylesheet href=/css/index.css><title>app</title><link href=/static/css/chunk-7ffc189b.88e98766.css rel=prefetch><link href=/static/css/chunk-a336857e.a77c2268.css rel=prefetch><link href=/static/js/chunk-7ffc189b.a4984b61.js rel=prefetch><link href=/static/js/chunk-a336857e.7f044608.js rel=prefetch><link href=/static/css/app.bd0d3f5b.css rel=preload as=style><link href=/static/css/chunk-vendors.3eab0684.css rel=preload as=style><link href=/static/js/app.5350d16a.js rel=preload as=script><link href=/static/js/chunk-vendors.9c1dccd1.js rel=preload as=script><link href=/static/css/chunk-vendors.3eab0684.css rel=stylesheet><link href=/static/css/app.bd0d3f5b.css rel=stylesheet></head><body><div id=app></div><script src=/static/js/chunk-vendors.9c1dccd1.js></script><script src=/static/js/app.5350d16a.js></script></body></html>
+<!DOCTYPE html>
+<html lang=cn>
+
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <meta name=referrer content=no-referrer>
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,viewport-fit=cover">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <title>demo</title>
+    <style>
+        #app {
+            display: flex;
+            width: 100%;
+            /* justify-content: space-between; */
+        }
+
+        ul li {
+            display: flex;
+            justify-content: space-between;
+        }
+        #detail img{ 
+            width: 600px;
+            height: 850px;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="input">
+    <button onclick="getData()">查询</button>
+    <div id=app>
+        <div>
+            <ul id="home">
+
+            </ul>
+        </div>
+        <div>
+
+            <ul id="list">
+
+            </ul>
+        </div>
+        <div>
+            <ul id="detail">
+
+            </ul>
+        </div>
+    </div>
+    </div>
+</body>
+<script>
+    //  // 打开一个 web socket  这里端口号和上面监听的需一致
+    // var ws = new WebSocket('ws://localhost:3000/');
+
+    // // Web Socket 已连接上，使用 send() 方法发送数据
+    // ws.onopen = function() {
+    // // 这里用一个延时器模拟事件
+    //     setInterval(function() {
+    //         ws.send('客户端消息');
+    //     },2000);
+    // }
+    // // 这里接受服务器端发过来的消息
+    // ws.onmessage = function(e) {
+    //     console.log(e.data)
+    // }
+    const Api = {
+        search: '/api/pingccApi/search?key=',
+        list: '/api/pingccApi/list?cartoonId=',
+        detail: '/api/pingccApi/detail?chapterId=',
+        downLoadAWorl: '/api/downLoadAWorl',
+        downLoadAll: '/api/downLoadAll',
+        // http://localhost/api/pingccApi/search?key=%E7%A7%9F%E5%80%9F
+        // http://localhost/api/pingccApi/list?cartoonId=2yirenzhixia
+        // http://localhost/api/pingccApi/detail?chapterId=2316518
+    }
+    let dataArr = [];
+    let listArr = [];
+    let title = "";
+    let ztTit = "";
+    const axios = ({ url, method = "GET", params = {} }) => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: url,
+                type: method,
+                data: method == 'GET' ? params : JSON.stringify(params),
+                contentType: 'application/json;charset=utf-8',
+                dataType: "json",
+                success: function (result) {
+                    // $("#div1").html(result);
+                    resolve(result)
+                }
+            });
+        })
+    }
+    $("#input").val('冰海战记');
+    getData();
+    function getData() {
+        let val = $("#input").val();
+        // val = '进击的巨人'
+        console.log(val);
+        axios({
+            url: Api.search + val
+        }).then(res => {
+            $('#home').html('');
+            $('#list').html('');
+            $('#detail').html('');
+            dataArr = res.data.data;
+            res.data.data.forEach((item, index) => {
+                $('#home').append(`<li>${index + 1}=><a href="javascript:;" onclick="getList('${item.cartoonId}')">${item.title}</a> <a href="javascript:;" onclick="downloadAll('${item.cartoonId}')">downloadAll</a></li>`)
+            });
+        })
+    }
+    
+    function getList(id) {
+        return new Promise((resolve, reject) => {
+            title = dataArr.find(item => item.cartoonId == id).title;
+            axios({
+                url: Api.list + id
+            }).then(res => {
+                $('#list').html('');
+                $('#detail').html('');
+                listArr = res.data.data;
+                res.data.data.forEach((item, index) => {
+                    $('#list').append(`<li>${index + 1}=><a href="javascript:;" onclick="getDetail(${item.chapterId})">${item.title}</a> <a href="javascript:;" onclick="oneDownload('${item.chapterId}')">download</a></li>`)
+                });
+                resolve(res.data.data);
+            })
+        })
+
+    }
+    function getDetail(id) {
+        axios({
+            url: Api.detail + id
+        }).then(res => {
+            $('#detail').html('');
+            res.data.data[0].content.forEach((item, index) => {
+                $('#detail').append(`<li>${index + 1}=>${item}  </li>`)
+            });
+        })
+    }
+
+    function oneDownload(id) {
+        ztTit = listArr.find(item => item.chapterId == id).title;
+        axios({
+            url: Api.downLoadAWorl,
+            params: {
+                id: id,
+                title: title,
+                zj_tit: ztTit,
+            }
+        }).then(res => {
+            console.log(res);
+        })
+    }
+    function downloadAll(id) {
+        getList(id).then(res => {
+            //一次性下载30话（不是卷），是没有问题的
+            axios({
+                url: Api.downLoadAll,
+                method: "POST",
+                params: {
+                    title: title,
+                    arr: res.map(item=>({id:item.chapterId,title:item.title})).slice(0,30),
+                }
+            }).then(res => {
+                console.log(res);
+            })
+        })
+    }
+</script>
+
+</html>

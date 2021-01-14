@@ -1,29 +1,28 @@
-//mkdir.js
 const fs=require('fs');
 const dirCache={};
-//filepath --->  path1 / path2
-
-let mkdir = (filepath) => {
-    let arr = filepath.split('/');
-    let path = arr[0];
-    let path2= arr[1];
-    fs.exists(`D:/Web/node/${path}`, function(exists) {
-        if (!exists){
-            fs.mkdir(`D:/Web/node/${path}`, (error) => {
-                if (error) {
-                    console.log(error);
-                }
-            })
-        }
-    });
-    fs.exists(`D:/Web/node/${path}/${path2}`, function(exists) {
-        if (!exists){
-            fs.mkdir(`D:/Web/node/${path}/${path2}`, (error) => {
-                if (error) {
-                    console.log(error);
-                }
-            })
-        }
-    });
+/**
+ * 创建文件夹
+ * fs.existsSync 验证文件夹是否存在
+ * 如果存在跳过，不存在的话就创建文件夹
+ * @param {Array} filepath 路径数组，最大长度2
+*/
+let mkdir = (filepath=[]) => {
+    let path = filepath[0];
+    let path2= filepath[1];
+    if(!fs.existsSync(`./file`)){
+        fs.mkdir(`./file`, { recursive: true }, (err) => {
+            if (err) throw err;
+        });
+    }
+    if(!fs.existsSync(`./file/${path}`)){
+        fs.mkdir(`./file/${path}`, { recursive: true }, (err) => {
+            if (err) throw err;
+        });
+    }
+    if(!fs.existsSync(`./file/${path}/${path2}`)){
+        fs.mkdir(`./file/${path}/${path2}`, { recursive: true }, (err) => {
+            if (err) throw err;
+        });
+    }
 };
 module.exports=mkdir;

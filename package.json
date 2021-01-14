@@ -10,10 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "bagpipe": "^0.3.5",
+    "body-parser": "^1.19.0",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
     "mysql": "^2.17.1",
     "nightmare": "^3.0.2",
+    "nodejs-websocket": "^1.7.2",
+    "request": "^2.88.2",
     "superagent": "^5.1.0"
   }
 }
