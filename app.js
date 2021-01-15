@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 app.use(express.json());//设置json解析 
+const myHost = require('./model/getIp'); //本机ip
+
 /**
  * express 设置全局响应头
  **/
@@ -31,18 +33,11 @@ global.globalData = {
 
 }
 
-app.listen(80, function () {
+const port = 80;
+
+app.listen(port, function () {
     console.log('启动成功');
+    console.log('http://localhost:'+port);
+    console.log(`http://${myHost}:${port}`);
 });
 
-// var ws = require('nodejs-websocket');
-// var server = ws.createServer(function(socket){
-// // 事件名称为text(读取字符串时，就叫做text)，读取客户端传来的字符串
-// 　  var count = 1;
-//     socket.on('text', function(str) {
-// 　　     // 在控制台输出前端传来的消息　　
-//         console.log(str);
-//         //向前端回复消息
-//         socket.sendText('服务器端收到客户端端发来的消息了！' + count++);
-//     });
-// }).listen(3000); 

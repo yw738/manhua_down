@@ -20,7 +20,8 @@
             display: flex;
             justify-content: space-between;
         }
-        #detail img{ 
+
+        #detail img {
             width: 600px;
             height: 850px;
         }
@@ -52,19 +53,28 @@
 </body>
 <script>
     //  // 打开一个 web socket  这里端口号和上面监听的需一致
-    // var ws = new WebSocket('ws://localhost:3000/');
+    var ws = new WebSocket('ws://localhost:3000/');
 
-    // // Web Socket 已连接上，使用 send() 方法发送数据
-    // ws.onopen = function() {
-    // // 这里用一个延时器模拟事件
-    //     setInterval(function() {
-    //         ws.send('客户端消息');
-    //     },2000);
-    // }
-    // // 这里接受服务器端发过来的消息
-    // ws.onmessage = function(e) {
-    //     console.log(e.data)
-    // }
+    ws.onopen = function () {
+        // Web Socket 已连接上，使用 send() 方法发送数据
+        console.log("已连接...");
+    };
+
+    ws.onmessage = function (evt) {
+        let { data } = evt;
+        let item = JSON.parse(data);
+        if (item.message) {
+            console.log(item.message);
+        } else {
+            console.log(`当前下载进度：${item.progress}%, 总页数：${item.allPage} , 已下载：${item.downPage} `);
+        }
+
+    };
+
+    ws.onclose = function () {
+        // 关闭 websocket
+        console.log("连接已关闭...");
+    };
     const Api = {
         search: '/api/pingccApi/search?key=',
         list: '/api/pingccApi/list?cartoonId=',
@@ -94,7 +104,7 @@
             });
         })
     }
-    $("#input").val('冰海战记');
+    $("#input").val('斗破苍穹');
     getData();
     function getData() {
         let val = $("#input").val();
@@ -112,7 +122,7 @@
             });
         })
     }
-    
+
     function getList(id) {
         return new Promise((resolve, reject) => {
             title = dataArr.find(item => item.cartoonId == id).title;
@@ -162,7 +172,7 @@
                 method: "POST",
                 params: {
                     title: title,
-                    arr: res.map(item=>({id:item.chapterId,title:item.title})).slice(0,30),
+                    arr: res.map(item => ({ id: item.chapterId, title: item.title })).slice(0, 5),
                 }
             }).then(res => {
                 console.log(res);
