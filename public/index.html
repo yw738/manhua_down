@@ -15,12 +15,12 @@
             width: 100%;
             /* justify-content: space-between; */
         }
-
+        
         ul li {
             display: flex;
             justify-content: space-between;
         }
-
+        
         #detail img {
             width: 600px;
             height: 850px;
@@ -55,13 +55,15 @@
     //  // 打开一个 web socket  这里端口号和上面监听的需一致
     var ws = new WebSocket('ws://localhost:3000/');
 
-    ws.onopen = function () {
+    ws.onopen = function() {
         // Web Socket 已连接上，使用 send() 方法发送数据
         console.log("已连接...");
     };
 
-    ws.onmessage = function (evt) {
-        let { data } = evt;
+    ws.onmessage = function(evt) {
+        let {
+            data
+        } = evt;
         let item = JSON.parse(data);
         if (item.message) {
             console.log(item.message);
@@ -71,7 +73,7 @@
 
     };
 
-    ws.onclose = function () {
+    ws.onclose = function() {
         // 关闭 websocket
         console.log("连接已关闭...");
     };
@@ -89,7 +91,11 @@
     let listArr = [];
     let title = "";
     let ztTit = "";
-    const axios = ({ url, method = "GET", params = {} }) => {
+    const axios = ({
+        url,
+        method = "GET",
+        params = {}
+    }) => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: url,
@@ -97,7 +103,7 @@
                 data: method == 'GET' ? params : JSON.stringify(params),
                 contentType: 'application/json;charset=utf-8',
                 dataType: "json",
-                success: function (result) {
+                success: function(result) {
                     // $("#div1").html(result);
                     resolve(result)
                 }
@@ -106,6 +112,7 @@
     }
     $("#input").val('斗破苍穹');
     getData();
+
     function getData() {
         let val = $("#input").val();
         // val = '进击的巨人'
@@ -140,12 +147,14 @@
         })
 
     }
+
     function getDetail(id) {
         axios({
             url: Api.detail + id
         }).then(res => {
             $('#detail').html('');
-            res.data.data[0].content.forEach((item, index) => {
+            let contentArr = res.data.data[0] || res.data.data;
+            contentArr.content.forEach((item, index) => {
                 $('#detail').append(`<li>${index + 1}=>${item}  </li>`)
             });
         })
@@ -164,6 +173,7 @@
             console.log(res);
         })
     }
+
     function downloadAll(id) {
         getList(id).then(res => {
             //一次性下载30话（不是卷），是没有问题的
@@ -172,7 +182,10 @@
                 method: "POST",
                 params: {
                     title: title,
-                    arr: res.map(item => ({ id: item.chapterId, title: item.title })).slice(0, 5),
+                    arr: res.map(item => ({
+                        id: item.chapterId,
+                        title: item.title
+                    })).slice(0, 5),
                 }
             }).then(res => {
                 console.log(res);

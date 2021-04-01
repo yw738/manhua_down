@@ -63,7 +63,8 @@ class DownClass {
                 }
                 console.warn('开始下载=>', title, zj_tit);
                 res.send({ code: 200, massage: '下载成功！' });
-                response.data.data[0].content.forEach((item, index) => {
+                let contentArr = response.data.data[0]||response.data.data;
+                contentArr.content.forEach((item, index) => {
                     DownClass.number++;
 
                     down({
@@ -125,13 +126,14 @@ class DownClass {
                 allPage:DownClass.number,
                 downPage:DownClass.downNum
             }
-            Socket.sendText(JSON.stringify(json));
+
+            Socket?.sendText(JSON.stringify(json));
             if (DownClass.downNum === DownClass.number) {
                 console.warn('全部下载完成！');
                 progress = 0;
                 DownClass.downNum = 0;
                 DownClass.number = 0;
-                Socket.sendText(JSON.stringify({message:'下载完成'}));
+                Socket?.sendText(JSON.stringify({message:'下载完成'}));
             }
         }, function (err, cb) {
             /*批量下载*/
