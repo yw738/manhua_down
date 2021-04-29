@@ -34,9 +34,9 @@ class Api {
         * decodeURIComponent(userName)
        */
        static search(req, res) {
-              let { option = 'title', key = '', from = 1, size = 10 } = req.query;
+              let { option = 'title', key = ' ', from = 1, size = 10 } = req.query;
               axios({
-                     url: `${URL}/cartoon/search/${option}/${encodeURIComponent(key)}/${from}/${size}`
+                     url: `${URL}/cartoon/search/${option}/${encodeURIComponent(key)}/${Number(from)}/${Number(size)}`
               }).then(response => {
                      res.send(response)
               })

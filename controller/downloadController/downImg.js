@@ -25,7 +25,7 @@ ws.createServer(function (socket) {
         console.log('收到的消息：', result);
     })
     Socket = socket;
-}).listen(3000);
+}).listen(8888);
 
 // bagpipe.on('full', function (length) {
 //     console.warn('底层系统处理不能及时完成，排队中，目前队列长度为:' + length);
