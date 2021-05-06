@@ -51,7 +51,7 @@ global.globalData = {
 const port = 80;
 
 app.listen(port, function () {
-  console.log("启动成功");
+  console.log("启动成功,请在chrome里面打开网页：");
   console.log("http://localhost:" + port);
-  console.log(`http://${myHost}:${port}`);
+//   console.log(`http://${myHost}:${port}`);
 });
