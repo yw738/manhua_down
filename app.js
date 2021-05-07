@@ -13,7 +13,7 @@ const MIME = {
   svg: "image/svg+xml", //(矢量图)
 };
 /**
- * express 设置全局响应头
+ * express 设置全局响应头 
  **/
 app.all("*", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
