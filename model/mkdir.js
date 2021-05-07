@@ -13,18 +13,18 @@ const setRegStr = (str="")=>str.replace(/<|>|\/|\\|\||\:|\*|\?|\"|/img,'').repla
 let mkdir = (filepath=[]) => {
     let path = setRegStr(filepath[0]);
     let path2= setRegStr(filepath[1]);
-    if(!fs.existsSync(`./../file`)){
-        fs.mkdir(`./../file`, { recursive: true }, (err) => {
+    if(!fs.existsSync(`./file`)){
+        fs.mkdir(`./file`, { recursive: true }, (err) => {
             if (err) throw err;
         });
     }
-    if(!fs.existsSync(`./../file/${path}`)){
-        fs.mkdir(`./../file/${path}`, { recursive: true }, (err) => {
+    if(!fs.existsSync(`./file/${path}`)){
+        fs.mkdir(`./file/${path}`, { recursive: true }, (err) => {
             if (err) throw err;
         });
     }
-    if(!fs.existsSync(`./../file/${path}/${path2}`)){
-        fs.mkdir(`./../file/${path}/${path2}`, { recursive: true }, (err) => {
+    if(!fs.existsSync(`./file/${path}/${path2}`)){
+        fs.mkdir(`./file/${path}/${path2}`, { recursive: true }, (err) => {
             if (err) throw err;
         });
     }

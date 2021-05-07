@@ -122,7 +122,7 @@ class DownClass {
     */
     static down({ img, name, title, zj_tit }) {
         // console.warn('底层系统处理不能及时完成，排队中，目前队列长度为:',bagpipe.queue.length);
-        bagpipe.push(downLoad, img, `./../file/${title}/${zj_tit}/${zj_tit}_${name}.jpg`, (name) => {
+        bagpipe.push(downLoad, img, `./file/${title}/${zj_tit}/${zj_tit}_${name}.jpg`, (name) => {
             DownClass.downNum++;
             progress = parseInt(DownClass.downNum / DownClass.number * 100);//进度
             console.log('下载成功:', name, '下载进度====>', progress + '%');
