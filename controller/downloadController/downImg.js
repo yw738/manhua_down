@@ -4,7 +4,10 @@ const Bagpipe = require('bagpipe');
 const bagpipe = new Bagpipe(10, { timeout: 1000 });
 const axios = require('../../model/axios');
 var ws = require('nodejs-websocket');
-
+/**
+ * 过滤不合法的文件名
+*/
+const setRegStr = (str="")=>str.replace(/<|>|\/|\\|\||\:|\*|\?|\"|/img,'').replace(/\s+/img,'');
 let progress = 0;//下载的总进度
 let Socket = null;//websocket 的 socket 用于推送进度
 /**
@@ -49,6 +52,8 @@ class DownClass {
             res.send({ code: 400, massage: '参数缺失！' });
             return;
         }
+        title = setRegStr(title);
+        zj_tit = setRegStr(zj_tit);
         DownClass.title = title;
         DownClass.zj_tit = zj_tit;
         mkdir([title, zj_tit]);

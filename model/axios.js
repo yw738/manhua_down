@@ -2,7 +2,7 @@ const { response } = require('express');
 const request = require('request');
 const URL = `http://api.pingcc.cn`;
 /**
- * 封装的ajax
+ * 封装的请求
  * 对URL的接口进行转发
  * @param {string} url 请求路径
  * @param {string} method 请求类型

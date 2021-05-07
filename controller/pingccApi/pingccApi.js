@@ -35,8 +35,9 @@ class Api {
        */
        static search(req, res) {
               let { option = 'title', key = ' ', from = 1, size = 10 } = req.query;
+              let str = Boolean(encodeURIComponent(key))?encodeURIComponent(key):'%20';
               axios({
-                     url: `${URL}/cartoon/search/${option}/${encodeURIComponent(key)}/${Number(from)}/${Number(size)}`
+                     url: `${URL}/cartoon/search/${option}/${str}/${Number(from)}/${Number(size)}`
               }).then(response => {
                      res.send(response)
               })
