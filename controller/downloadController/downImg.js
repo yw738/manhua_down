@@ -131,14 +131,17 @@ class DownClass {
                 allPage:DownClass.number,
                 downPage:DownClass.downNum
             }
-
-            Socket?.sendText(JSON.stringify(json));
+            if(Socket&&Socket.sendText){
+                Socket.sendText(JSON.stringify(json));
+            }
             if (DownClass.downNum === DownClass.number) {
                 console.warn('全部下载完成！');
                 progress = 0;
                 DownClass.downNum = 0;
                 DownClass.number = 0;
-                Socket?.sendText(JSON.stringify({message:'下载完成'}));
+                if(Socket&&Socket.sendText){
+                    Socket.sendText(JSON.stringify({message:'下载完成'}));
+                }
             }
         }, function (err, cb) {
             /*批量下载*/
