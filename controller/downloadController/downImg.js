@@ -129,7 +129,6 @@ class DownClass {
      * @param {string} zj_tit 漫画章节名称
      */
     static down({ img, name, title, zj_tit }) {
-        // console.warn('底层系统处理不能及时完成，排队中，目前队列长度为:',bagpipe.queue.length);
         bagpipe.push(
             downLoad,
             img,

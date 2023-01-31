@@ -12,6 +12,7 @@ const MIME = {
     png: "image/png", //图片
     svg: "image/svg+xml", //(矢量图)
 };
+
 /**
  * express 设置全局响应头
  **/
